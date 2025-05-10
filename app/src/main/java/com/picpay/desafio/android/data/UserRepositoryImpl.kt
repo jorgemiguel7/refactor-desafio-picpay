@@ -1,5 +1,8 @@
 package com.picpay.desafio.android.data
 
+import com.picpay.desafio.android.core.error.DataError
+import com.picpay.desafio.android.core.error.toNetworkException
+import com.picpay.desafio.android.core.result.Result
 import com.picpay.desafio.android.data.mapper.toDomain
 import com.picpay.desafio.android.data.remote.api.PicPayService
 import com.picpay.desafio.android.domain.model.User
@@ -9,14 +12,13 @@ import kotlinx.coroutines.withContext
 
 class UserRepositoryImpl(private val picPayService: PicPayService) : UserRepository {
 
-    // TODO: Adicionar logica de cache
-    // TODO: Fazer o tratamento de exception
-    override suspend fun getUsers(): List<User> {
+    override suspend fun getUsers(): Result<List<User>, DataError> {
         return withContext(Dispatchers.IO) {
             try {
-                picPayService.getUsers().map { it.toDomain() }
+                val result = picPayService.getUsers().map { it.toDomain() }
+                Result.Success(result)
             } catch (exception: Exception) {
-                emptyList()
+                Result.Error(exception.toNetworkException())
             }
         }
     }

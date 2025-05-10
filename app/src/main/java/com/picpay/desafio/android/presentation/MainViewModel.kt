@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.picpay.desafio.android.core.result.onResult
 import com.picpay.desafio.android.domain.model.User
 import com.picpay.desafio.android.domain.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -22,14 +23,16 @@ class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
     fun fetchUsers() = viewModelScope.launch {
         _isLoading.postValue(true)
 
-        userRepository.getUsers().let { result ->
-            _isLoading.postValue(false)
-
-            if (result.isNotEmpty()) {
-                _users.postValue(result)
-            } else {
+        userRepository.getUsers().onResult(
+            onSuccess = { users ->
+                _users.postValue(users)
+                _isLoading.postValue(false)
+                _error.postValue(false)
+            },
+            onError = {
+                _isLoading.postValue(false)
                 _error.postValue(true)
             }
-        }
+        )
     }
 }

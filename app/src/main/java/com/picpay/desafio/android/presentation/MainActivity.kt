@@ -13,9 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<MainViewModel>()
-
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-
     private val userListAdapter by lazy { UserListAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +27,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() = with(binding) {
         userListProgressBar.visibility = View.VISIBLE
-        recyclerView.adapter = userListAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = userListAdapter
+        }
     }
 
     private fun observeViewModel() = with(viewModel) {
@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
         error.observe(this@MainActivity) { error ->
             if (error) {
-                binding.userListProgressBar.visibility = View.GONE
                 Toast.makeText(
                     this@MainActivity,
                     getString(R.string.error),
@@ -49,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         }
         users.observe(this@MainActivity) { users ->
             userListAdapter.submitList(users)
-            binding.recyclerView.visibility = View.VISIBLE
         }
     }
 }
