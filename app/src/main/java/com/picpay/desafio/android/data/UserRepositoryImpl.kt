@@ -30,7 +30,9 @@ class UserRepositoryImpl(
         } catch (e: Exception) {
             runCatching {
                 val cached = userDao.getUsers().map { it.toDomain() }
-                emit(Result.Success(cached))
+
+                if (cached.isNotEmpty()) emit(Result.Success(cached))
+                else emit(Result.Error(e.toNetworkException()))
             }.onFailure {
                 emit(Result.Error(e.toNetworkException()))
             }

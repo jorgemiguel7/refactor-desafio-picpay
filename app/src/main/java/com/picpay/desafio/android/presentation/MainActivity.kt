@@ -1,53 +1,27 @@
 package com.picpay.desafio.android.presentation
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.picpay.desafio.android.R
-import com.picpay.desafio.android.databinding.ActivityMainBinding
-import com.picpay.desafio.android.presentation.adapter.UserListAdapter
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.picpay.desafio.android.presentation.contacts.ContactsScreen
+import com.picpay.desafio.android.presentation.contacts.ContactsViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel by viewModel<MainViewModel>()
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val userListAdapter by lazy { UserListAdapter() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setContent {
+            val viewModel = koinViewModel<ContactsViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        initView()
-        observeViewModel()
-        viewModel.fetchUsers()
-    }
-
-    private fun initView() = with(binding) {
-        userListProgressBar.visibility = View.VISIBLE
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = userListAdapter
-        }
-    }
-
-    private fun observeViewModel() = with(viewModel) {
-        isLoading.observe(this@MainActivity) { isLoading ->
-            binding.userListProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
-        error.observe(this@MainActivity) { error ->
-            if (error) {
-                Toast.makeText(
-                    this@MainActivity,
-                    getString(R.string.error),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-        users.observe(this@MainActivity) { users ->
-            userListAdapter.submitList(users)
+            ContactsScreen(
+                uiState = uiState,
+                effect = viewModel.effects
+            )
         }
     }
 }
