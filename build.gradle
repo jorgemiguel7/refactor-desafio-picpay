@@ -21,6 +21,9 @@ buildscript {
         // Coroutines
         coroutines_version = '1.8.0'
 
+        // Room
+        room_version = '2.7.1'
+
         // Koin
         koin_version = '3.5.3'
 
@@ -35,11 +38,14 @@ buildscript {
         core_testing_version = '2.2.0'
         test_runner_version = '1.5.2'
         espresso_version = '3.5.1'
-        core_ktx_test_version = '1.13.1'
+        core_ktx_test_version = '1.6.0'
 
         // RxJava
         rxjava_version = '2.2.21'
         rxandroid_version = '2.1.1'
+
+        // MockK
+        mockk_version = '1.13.12'
     }
 
     repositories {
@@ -59,6 +65,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
     }
 }
 
