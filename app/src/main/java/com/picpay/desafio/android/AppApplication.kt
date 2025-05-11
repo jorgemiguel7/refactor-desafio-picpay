@@ -1,6 +1,7 @@
 package com.picpay.desafio.android
 
 import android.app.Application
+import com.picpay.desafio.android.data.di.databaseModule
 import com.picpay.desafio.android.data.di.networkModule
 import com.picpay.desafio.android.data.di.repositoryModule
 import com.picpay.desafio.android.di.viewModelModule
@@ -15,7 +16,8 @@ class AppApplication : Application() {
             modules(
                 viewModelModule,
                 repositoryModule,
-                networkModule
+                networkModule,
+                databaseModule
             )
         }
     }

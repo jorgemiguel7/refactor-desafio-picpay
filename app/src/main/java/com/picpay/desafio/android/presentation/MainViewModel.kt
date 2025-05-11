@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.picpay.desafio.android.core.result.onResult
 import com.picpay.desafio.android.domain.model.User
 import com.picpay.desafio.android.domain.repository.UserRepository
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
 
@@ -20,19 +21,21 @@ class MainViewModel(private val userRepository: UserRepository) : ViewModel() {
     private val _error by lazy { MutableLiveData<Boolean>() }
     val error: LiveData<Boolean> = _error
 
-    fun fetchUsers() = viewModelScope.launch {
-        _isLoading.postValue(true)
-
-        userRepository.getUsers().onResult(
-            onSuccess = { users ->
-                _users.postValue(users)
-                _isLoading.postValue(false)
-                _error.postValue(false)
-            },
-            onError = {
-                _isLoading.postValue(false)
-                _error.postValue(true)
+    fun fetchUsers() {
+        userRepository.getUsers()
+            .onEach { result ->
+                result.onResult(
+                    onSuccess = { users ->
+                        _users.postValue(users)
+                        _isLoading.postValue(false)
+                        _error.postValue(false)
+                    },
+                    onError = {
+                        _isLoading.postValue(false)
+                        _error.postValue(true)
+                    }
+                )
             }
-        )
+            .launchIn(viewModelScope)
     }
 }

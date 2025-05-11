@@ -10,8 +10,11 @@ import com.picpay.desafio.android.domain.model.User
 class UserListAdapter : ListAdapter<User, UserListItemViewHolder>(UserDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListItemViewHolder {
-        val binding =
-            ListItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListItemUserBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return UserListItemViewHolder(binding)
     }
 
