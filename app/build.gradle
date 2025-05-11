@@ -127,12 +127,15 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test:core-ktx:$core_ktx_test_version"
+    androidTestImplementation "androidx.test:core:1.5.0"
     androidTestImplementation "androidx.test.ext:junit-ktx:1.2.1"
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1"
     testImplementation "app.cash.turbine:turbine:0.12.1"
+    testImplementation "io.insert-koin:koin-test:3.5.6"
+    androidTestImplementation "io.insert-koin:koin-test-junit4:3.4.0"
 
     // Testes Compose
-    testImplementation "androidx.compose.ui:ui-test-junit4:1.7.0-alpha01"
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.7.0-alpha01"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:1.7.0-alpha01"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.8.1"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.8.1"
 }
