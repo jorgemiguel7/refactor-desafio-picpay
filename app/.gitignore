@@ -1,0 +1,12 @@
+/build/
+.idea/
+!.idea/*.iml
+.idea/codeStyles/*
+.idea/dictionaries/*
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/.name
