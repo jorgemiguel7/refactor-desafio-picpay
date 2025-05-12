@@ -13,7 +13,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import kotlin.test.Test
+import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ContactsViewModelTest {
